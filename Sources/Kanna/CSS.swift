@@ -155,7 +155,11 @@ private let matchSubContains  = firstMatch("contains\\([\"\'](.*?)[\"\']\\)")
 
 private func substringWithRangeAtIndex(_ result: AKTextCheckingResult, str: String, at: Int) -> String {
     if result.numberOfRanges > at {
+        #if swift(>=4.0) || os(Linux)
         let range = result.range(at: at)
+        #else
+        let range = result.rangeAt(at)
+        #endif
         if range.length > 0 {
             let startIndex = str.index(str.startIndex, offsetBy: range.location)
             let endIndex = str.index(startIndex, offsetBy: range.length)
